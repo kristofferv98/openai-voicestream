@@ -142,7 +142,6 @@ If you encounter any issues while using OpenAI VoiceStream, here are a few thing
 
 - Make sure you have set the `OPENAI_API_KEY` environment variable correctly with your OpenAI API key.
 - Check that you have a stable internet connection to communicate with the OpenAI API.
-- Ensure that you have installed all the required dependencies (`pyaudio`, `httpx`) using pip.
 - If you encounter any errors or exceptions, please check the error message and consult the documentation or seek support.
 
 ## FAQ

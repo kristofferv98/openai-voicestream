@@ -9,7 +9,7 @@ import logging
 from queue import Queue, Empty
 
 # Setup logging
-#logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 class VoiceProcessor:
@@ -82,6 +82,7 @@ class VoiceProcessor:
         """
         Process audio from the sentences in the queue and play it using PyAudio.
         """
+        logging.debug("Initializing PyAudio")
         p = pyaudio.PyAudio()
         stream = p.open(format=self.format, channels=self.channels, rate=self.rate, output=True)
         headers = {
@@ -109,9 +110,12 @@ class VoiceProcessor:
 
                 try:
                     self.is_processing.set()
+                    logging.debug("Sending request to OpenAI API")
                     response = client.post("https://api.openai.com/v1/audio/speech", headers=headers, json=data,
                                            timeout=60)
+                    logging.debug("Request sent to OpenAI API")
                     response.raise_for_status()
+                    logging.debug("Received response from OpenAI API")
 
                     for chunk in response.iter_bytes(self.chunk_size):
                         if chunk:
