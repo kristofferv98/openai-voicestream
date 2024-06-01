@@ -40,7 +40,7 @@ from openai_voicestream import VoiceProcessor
 api_key = os.getenv("OPENAI_API_KEY")
 
 # Initialize the VoiceProcessor with the API key and desired voice
-processor = VoiceProcessor(api_key, voice="nova")  # Using the "nova" voice
+processor = VoiceProcessor(api_key, voice="nova", full_quality=True)  # Using the "nova" voice
 
 # Example text with paragraphs to be processed
 text = """This is an example using the nova voice.
@@ -152,7 +152,7 @@ Yes, you can use OpenAI VoiceStream for commercial purposes, subject to the term
 
 ### How can I customize the voice output?
 
-OpenAI VoiceStream provides multiple voice options that you can choose from. You can specify the desired voice by passing the voice name or index to the `VoiceProcessor` constructor. Available voices include: alloy, echo, fable, onyx, nova, and shimmer.
+OpenAI VoiceStream provides multiple voice options that you can choose from. You can specify the desired voice by passing the voice name or index to the `VoiceProcessor` constructor. Available voices include: alloy, echo, fable, onyx, nova, and shimmer. You can set the quality to full_quality=True in the VoiceProcessor for hd voice generation (this might cause a small delay but should be unnoticeable)
 
 ### Can I control the speed or pitch of the generated audio?
 

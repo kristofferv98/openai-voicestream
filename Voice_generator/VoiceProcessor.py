@@ -39,7 +39,7 @@ class VoiceProcessor:
         6: "shimmer"
     }
 
-    def __init__(self, api_key, voice: Union[str, int] = "alloy"):
+    def __init__(self, api_key, voice: Union[str, int] = "alloy", full_quality=False):
         """
         Initialize the VoiceProcessor with the provided API key and voice.
 
@@ -49,6 +49,7 @@ class VoiceProcessor:
         """
         self.api_key = api_key
         self.voice = self.validate_voice(voice)
+        self.full_quality = full_quality
         self.format = pyaudio.paInt16
         self.channels = 1
         self.rate = 24000
@@ -100,9 +101,12 @@ class VoiceProcessor:
 
                 if sentence is None:
                     break
-
+                if self.full_quality:
+                    quality = ""
+                else:
+                    quality = "-hd"
                 data = {
-                    "model": "tts-1",
+                    "model": f"tts-1{quality}",
                     "voice": self.voice,
                     "input": str(sentence),
                     "response_format": "pcm"
@@ -254,7 +258,7 @@ if __name__ == "__main__":
         raise ValueError("Please set the OPENAI_API_KEY environment variable.")
 
     # Initialize the VoiceProcessor with the API key and desired voice
-    processor = VoiceProcessor(api_key, voice=3)  # You can change the voice here
+    processor = VoiceProcessor(api_key, voice=3, full_quality=True)  # You can change the voice here
 
     # Example text with paragraphs to be processed
     text = """This is the first paragraph.
