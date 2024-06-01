@@ -30,7 +30,32 @@ export OPENAI_API_KEY='your_openai_api_key'
 
 ### Example Code
 
-Here's an example of how to use OpenAI VoiceStream:
+Here's 2 examples of how to use OpenAI VoiceStream passing in text and for a token stream:
+```python
+import os
+import time
+from openai_voicestream import VoiceProcessor
+
+# Retrieve your OpenAI API key from environment variables
+api_key = os.getenv("OPENAI_API_KEY")
+
+# Initialize the VoiceProcessor with the API key and desired voice
+processor = VoiceProcessor(api_key, voice="nova")  # Using the "nova" voice
+
+# Example text with paragraphs to be processed
+text = """This is an example using the nova voice.
+
+The nova voice provides a different tone and style compared to the default voice.
+
+You can experiment with different voices to find the one that suits your needs."""
+
+# Add the text to the processing queue
+processor.add_text_to_queue(text)
+
+# Wait for all processing to complete before exiting
+processor.wait_for_completion()
+```
+
 
 ```python
 import os
@@ -39,27 +64,22 @@ from openai_voicestream import VoiceProcessor
 
 # Retrieve your OpenAI API key from environment variables
 api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
-    raise ValueError("Please set the OPENAI_API_KEY environment variable.")
 
 # Initialize the VoiceProcessor with the API key and desired voice
-processor = VoiceProcessor(api_key, voice=3)  # You can change the voice here
-
-# Example text with paragraphs to be processed
-text = """This is the first paragraph.
-
-This is the second paragraph, which is a bit longer and might need more processing time.
-
-Here is the third paragraph."""
-
-# Add the text to the processing queue
-processor.add_text_to_queue(text)
+processor = VoiceProcessor(api_key, voice="shimmer")  # Using the "shimmer" voice
 
 # Example tokens being added to the processing queue
-tokens = ["Token 1, ", "token 2,", "Token 3 are processed as one sentence\n\n", "Token 4, ", "token 5."]
+tokens = [
+    "This is an example of processing a stream of tokens.",
+    " The tokens are gradually added to the processor,",
+    " simulating a real-time scenario where text is generated incrementally.",
+    "\n\nThe processor will handle the tokens and generate audio on-the-fly,",
+    " providing a seamless text-to-speech experience."
+]
+
+# Process the tokens in a streaming manner (this can be replaced with an tokenstream)
 for token in tokens:
     processor.add_token(token)
-    time.sleep(0.5)  # Simulate a delay between receiving tokens
 
 # Finalize any remaining tokens in the buffer
 processor.finalize_tokens()
